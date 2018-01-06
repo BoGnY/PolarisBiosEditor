@@ -1,5 +1,7 @@
 # PolarisBiosEditor v1.6.6
 
+If you don't trust the EXE just build on Linux with ```sh build.sh```. Quick and easy.
+
 For donations or other requests please contact me by email: jk@jascha-knack.de
 
 VirusTotal Report: https://www.virustotal.com/de/file/da96cd604093c686e8b1488726ae10a43a550aea5aaba0c0f308183b86f340f3/analysis/1505395469/
@@ -51,7 +53,7 @@ rx5xx also supported
 
 Contribution from Sebohe:
 
-### Dependencies
+### Build Dependencies
 
 Ubuntu 16.04.2:
 
@@ -63,6 +65,11 @@ Arch Linux:
 
 ```
 yaourt -Sy mono48
+```
+### Building
+
+```
+sh build.sh
 ```
 
 ### Executing
