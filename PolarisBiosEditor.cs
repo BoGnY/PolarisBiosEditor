@@ -715,6 +715,11 @@ namespace PolarisBiosEditor
                         }
                         ));
                         tableFAN.Items.Add(new ListViewItem(new string[] {
+                            "Target Temp. (C)",
+                            Convert.ToString (atom_fan_table.ucTargetTemperature)
+                        }
+                        ));
+                        tableFAN.Items.Add(new ListViewItem(new string[] {
                             "Legacy or Fuzzy Fan Mode",
                             Convert.ToString (atom_fan_table.ucFanControlMode)
                         }
@@ -1038,7 +1043,11 @@ namespace PolarisBiosEditor
                     {
                         atom_fan_table.usTMax = (UInt16)(num * 100);
                     }
-                    else if (name == "Legacy or Fuzzy Fan Mode")
+					else if (name == "Target Temp. (C)")
+                    {
+                        atom_fan_table.ucTargetTemperature = (Byte)num;
+                    }
+					else if (name == "Legacy or Fuzzy Fan Mode")
                     {
                         atom_fan_table.ucFanControlMode = (Byte)(num);
                     }
