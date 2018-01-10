@@ -16,7 +16,14 @@ one click timing feature should be used with care, it maybe not stable for you
 
 please build the executable yourself or decompile the existing one if you don't trust
 
-rx5xx also supported
+### v1.6.7
+- created solution and project files for ide
+- support for device id 0x67ef
+- better timings for micron memory
+- firmware signature test / firmware signature in ascii
+- editing of bios message (experimental)
+- online check for new versions
+- online display of developer notice
 
 ### v1.6.6
 - support for rx550 device id 0x699F

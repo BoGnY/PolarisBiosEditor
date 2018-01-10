@@ -31,6 +31,7 @@ namespace PolarisBiosEditor
             this.open = new System.Windows.Forms.Button();
             this.save = new System.Windows.Forms.Button();
             this.txtChecksum = new System.Windows.Forms.TextBox();
+            this.txtBIOSBootupMessage = new System.Windows.Forms.TextBox();
             this.boxROM = new System.Windows.Forms.GroupBox();
             this.tableROM = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -103,6 +104,16 @@ namespace PolarisBiosEditor
             this.txtChecksum.Name = "txtChecksum";
             this.txtChecksum.Size = new System.Drawing.Size(100, 20);
             this.txtChecksum.TabIndex = 2;
+            // 
+            // txtBIOSBootupMessage
+            // 
+            this.txtBIOSBootupMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBIOSBootupMessage.Font = new System.Drawing.Font("Courier New", 8.25F);
+            this.txtBIOSBootupMessage.Location = new System.Drawing.Point(295, 14);
+            this.txtBIOSBootupMessage.Name = "txtBIOSBootupMessage";
+            this.txtBIOSBootupMessage.Size = new System.Drawing.Size(500, 20);
             // 
             // boxROM
             // 
@@ -432,6 +443,7 @@ namespace PolarisBiosEditor
             this.Controls.Add(this.boxPOWERPLAY);
             this.Controls.Add(this.boxROM);
             this.Controls.Add(this.txtChecksum);
+            this.Controls.Add(this.txtBIOSBootupMessage);
             this.Controls.Add(this.save);
             this.Controls.Add(this.open);
             this.Controls.Add(this.editSubItem1);
@@ -457,6 +469,7 @@ namespace PolarisBiosEditor
     private System.Windows.Forms.Button open;
     private System.Windows.Forms.Button save;
     private System.Windows.Forms.TextBox txtChecksum;
+    private System.Windows.Forms.TextBox txtBIOSBootupMessage;
     private System.Windows.Forms.GroupBox boxROM;
     private System.Windows.Forms.GroupBox boxPOWERPLAY;
     private System.Windows.Forms.GroupBox boxPOWERTUNE;

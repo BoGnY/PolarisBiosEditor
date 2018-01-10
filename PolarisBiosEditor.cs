@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Linq;
 using System.ComponentModel;
+using System.Net;
 
 namespace PolarisBiosEditor
 {
@@ -16,6 +17,10 @@ namespace PolarisBiosEditor
 
         /* DATA */
 
+        string version = "1.6.7";
+        string programTitle = "PolarisBiosEditor";
+
+
         string[] manufacturers = new string[] {
             "SAMSUNG",
             "ELPIDA",
@@ -23,43 +28,50 @@ namespace PolarisBiosEditor
             "MICRON"
         };
 
-        Dictionary<string, string> rc = new Dictionary<string, string>();
-
+        string[] supportedDeviceID = new string[] { "67DF", "67EF", "1002", "67FF", "699F" };
 
         string[] timings = new string[] {
-		// FIXME Try UberMix 3.2 Timings:
-		// 777000000000000022CC1C00CEE55C46C0590E1532CD66090060070014051420FA8900A00300000012123442C3353C19
-		// UberMix 3.1
-		"777000000000000022CC1C00AD615C41C0590E152ECC8608006007000B031420FA8900A00300000010122F3FBA354019",
-		// UberMix 2.3 (less extreme)
-		"777000000000000022CC1C00AD615B41C0570E152DCB7409006007000B031420FA8900A00300000010123A46DB354019",
-		// 1750/2000MHz Mix Timings
-		"777000000000000022CC1C00106A6D4DD0571016B90D060C006AE70014051420FA8900A0030000001E123A46DB354019",
-		// 1625/2000MHz Mix Timings
-		"777000000000000022CC1C00CE616C47D0570F15B48C250B006AE7000B031420FA8900A0030000001E123A46DB354019",
-		// Good HYNIX_2
-		"777000000000000022AA1C00B56A6D46C0551017BE8E060C006AE6000C081420EA8900AB030000001B162C31C0313F17",
-		// Good Micron
-		"777000000000000022AA1C0073626C41B0551016BA0D260B006AE60004061420EA8940AA030000001914292EB22E3B16",
-		// Good Hynix_1
-		"999000000000000022559D0010DE5B4480551312B74C450A00400600750414206A8900A00200312010112D34A42A3816",
-		// Good Elpida (fixed with version 1.6.4, see issue #19)
-		"777000000000000022AA1C00315A5B36A0550F15B68C1506004082007C041420CA8980A9020004C01712262B612B3715"
+    		// FIXME Try UberMix 3.2 Timings:
+    		// 777000000000000022CC1C00CEE55C46C0590E1532CD66090060070014051420FA8900A00300000012123442C3353C19
+    		// UberMix 3.1
+    		"777000000000000022CC1C00AD615C41C0590E152ECC8608006007000B031420FA8900A00300000010122F3FBA354019",
+          //"777000000000000022CC1C00AD615C41C0590E152ECCA60B006007000B031420FA8900A00300000010122F3FBA354019", // new, please test
+           	// UberMix 2.3 (less extreme)
+    		"777000000000000022CC1C00AD615B41C0570E152DCB7409006007000B031420FA8900A00300000010123A46DB354019",
+    		// 1750/2000MHz Mix Timings
+    		"777000000000000022CC1C00106A6D4DD0571016B90D060C006AE70014051420FA8900A0030000001E123A46DB354019",
+    		// 1625/2000MHz Mix Timings
+    		"777000000000000022CC1C00CE616C47D0570F15B48C250B006AE7000B031420FA8900A0030000001E123A46DB354019",
+
+            // Good HYNIX_2
+    		"777000000000000022AA1C00B56A6D46C0551017BE8E060C006AE6000C081420EA8900AB030000001B162C31C0313F17",
+         		
+            // Good Micron
+    	  //"777000000000000022AA1C0073626C41B0551016BA0D260B006AE60004061420EA8940AA030000001914292EB22E3B16", old
+            "777000000000000022AA1C0073626C41B0551016BA0D260B0060060004061420EA8940AA030000001914292EB22E3B16", // new tested timings (much better xmr performance @ rx560 sapphire pulse)
+             
+    		// Good Hynix_1
+    		"999000000000000022559D0010DE5B4480551312B74C450A00400600750414206A8900A00200312010112D34A42A3816",
+
+    		// Good Elpida (fixed with version 1.6.4, see issue #19)
+    		"777000000000000022AA1C00315A5B36A0550F15B68C1506004082007C041420CA8980A9020004C01712262B612B3715"
+          //"777000000000000022AA1C00AC615B3CA0550F142C8C1506006004007C041420CA8980A9020004C01712262B612B3715" // new, please test
         };
+
+        Dictionary<string, string> rc = new Dictionary<string, string>();
 
         [StructLayout(LayoutKind.Explicit, Size = 96, CharSet = CharSet.Ansi)]
         public class VRAM_TIMING_RX
         {
-
-
 
         }
 
         Byte[] buffer;
         Int32Converter int32 = new Int32Converter();
         UInt32Converter uint32 = new UInt32Converter();
-        string[] supportedDeviceID = new string[] { "67DF", "1002", "67FF", "699F" };
+
         string deviceID = "";
+        Boolean hasInternetAccess = false;
 
         int atom_rom_checksum_offset = 0x21;
         int atom_rom_header_ptr = 0x48;
@@ -93,7 +105,7 @@ namespace PolarisBiosEditor
         ATOM_VRAM_ENTRY[] atom_vram_entries;
         ATOM_VRAM_TIMING_ENTRY[] atom_vram_timing_entries;
         int atom_vram_index = 0;
-        const int MAX_VRAM_ENTRIES = 48; // e.g. MSI-Armor-RX-580-4GB has 36 entrys
+        const int MAX_VRAM_ENTRIES = 48; // e.g. MSI-Armor-RX-580-4GB has 36 entries
         int atom_vram_timing_offset;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -108,7 +120,9 @@ namespace PolarisBiosEditor
         struct ATOM_ROM_HEADER
         {
             public ATOM_COMMON_TABLE_HEADER sHeader;
-            public UInt32 uaFirmWareSignature;
+            //public UInt32 uaFirmWareSignature;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x4)]
+            public Char[] uaFirmWareSignature;
             public UInt16 usBiosRuntimeSegmentAddress;
             public UInt16 usProtectedModeInfoOffset;
             public UInt16 usConfigFilenameOffset;
@@ -128,6 +142,8 @@ namespace PolarisBiosEditor
             public UInt16 usVendorID;
             public UInt16 usDeviceID;
         }
+
+        String BIOS_BootupMessage;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         struct ATOM_DATA_TABLES
@@ -457,7 +473,43 @@ namespace PolarisBiosEditor
         public PolarisBiosEditor()
         {
             InitializeComponent();
-            this.Text += " 1.6.6";
+            this.Text = this.programTitle + " " + this.version;
+
+            try
+            {
+
+                WebClient myWebClient = new WebClient();
+                Stream myStream = myWebClient.OpenRead("https://raw.githubusercontent.com/jaschaknack/PolarisBiosEditor/master/version");
+                StreamReader sr = new StreamReader(myStream);
+                string newVersion = sr.ReadToEnd().Trim();
+                if (!newVersion.Equals(version)) {
+                    MessageBox.Show("There is a new version available! " + version + " -> " + newVersion);
+                }
+                myStream.Close();
+
+                myStream = myWebClient.OpenRead("https://raw.githubusercontent.com/jaschaknack/PolarisBiosEditor/master/notice");
+                sr = new StreamReader(myStream);
+                string notice = sr.ReadToEnd().Trim();
+
+                MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                DialogResult result;
+
+                result = MessageBox.Show(notice + "\n\nClick Yes button to copy to clipboard", "A message from the developer", buttons);
+
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+
+                    Clipboard.SetText(notice);
+
+                }
+
+                myStream.Close();
+
+                hasInternetAccess = true;
+
+            } catch (System.Net.WebException) {
+                this.Text += " (offline mode)";
+            }
 
             rc.Add("MT51J256M3", "MICRON");
             rc.Add("EDW4032BAB", "ELPIDA");
@@ -467,9 +519,7 @@ namespace PolarisBiosEditor
             rc.Add("K4G80325FB", "SAMSUNG");
             rc.Add("K4G41325FE", "SAMSUNG");
             rc.Add("K4G41325FC", "SAMSUNG");
-			rc.Add("K4G41325FS", "SAMSUNG");
-
-
+            rc.Add("K4G41325FS", "SAMSUNG");
 
             save.Enabled = false;
             boxROM.Enabled = false;
@@ -505,7 +555,7 @@ namespace PolarisBiosEditor
                 if (editSubItem2.Text.Length == 96)
                 {
                     byte[] decode = StringToByteArray(editSubItem2.Text);
-                    MessageBox.Show("Decoe");
+                    MessageBox.Show("Decode Memory Timings " + decode + " / not implemented yet!");
                 }
 
 
@@ -547,6 +597,12 @@ namespace PolarisBiosEditor
                     deviceID = atom_rom_header.usDeviceID.ToString("X");
                     fixChecksum(false);
 
+                    String firmwareSignature = new string(atom_rom_header.uaFirmWareSignature);
+                    if (!firmwareSignature.Equals("ATOM"))
+                    {
+                        MessageBox.Show("WARNING! BIOS Signature is not valid. Only continue if you are 100% sure what you are doing!");
+                    }
+
                     DialogResult msgSuported = DialogResult.Yes;
                     if (!supportedDeviceID.Contains(deviceID))
                     {
@@ -554,6 +610,27 @@ namespace PolarisBiosEditor
                     }
                     if (msgSuported == DialogResult.Yes)
                     {
+                        StringBuilder sb = new StringBuilder();
+
+                        Int32 ptr = atom_rom_header.usBIOS_BootupMessageOffset+2;
+                        while (ptr != -1)
+                        {
+                            Char c = (Char)buffer[ptr];
+                            if (c == '\0') {
+                                ptr = -1;
+                            } else if(c == '\n' || c == '\r') {
+                                ptr++;
+                            } else {
+                                sb.Append(c);
+                                ptr++;
+                            }
+                        }
+
+                        BIOS_BootupMessage = sb.ToString();
+
+                        txtBIOSBootupMessage.Text = BIOS_BootupMessage;
+                        txtBIOSBootupMessage.MaxLength = BIOS_BootupMessage.Length;
+
                         atom_data_table = fromBytes<ATOM_DATA_TABLES>(buffer.Skip(atom_rom_header.usMasterDataTableOffset).ToArray());
                         atom_powerplay_offset = atom_data_table.PowerPlayInfo;
                         atom_powerplay_table = fromBytes<ATOM_POWERPLAY_TABLE>(buffer.Skip(atom_powerplay_offset).ToArray());
@@ -614,6 +691,11 @@ namespace PolarisBiosEditor
                         }
 
                         tableROM.Items.Add(new ListViewItem(new string[] {
+                            "BootupMessageOffset",
+                            "0x" + atom_rom_header.usBIOS_BootupMessageOffset.ToString ("X")
+                        }
+                        ));
+                        tableROM.Items.Add(new ListViewItem(new string[] {
                             "VendorID",
                             "0x" + atom_rom_header.usVendorID.ToString ("X")
                         }
@@ -635,7 +717,8 @@ namespace PolarisBiosEditor
                         ));
                         tableROM.Items.Add(new ListViewItem(new string[] {
                             "Firmware Signature",
-                            "0x" + atom_rom_header.uaFirmWareSignature.ToString ("X")
+                            //"0x" + atom_rom_header.uaFirmWareSignature.ToString ("X")
+                            new string(atom_rom_header.uaFirmWareSignature)
                         }
                         ));
 
@@ -720,7 +803,7 @@ namespace PolarisBiosEditor
                         }
                         ));
                         tableFAN.Items.Add(new ListViewItem(new string[] {
-                            "Legacy or Fuzzy Fan Mode",
+                            "Fuzzy Fan Mode",
                             Convert.ToString (atom_fan_table.ucFanControlMode)
                         }
                         ));
@@ -938,27 +1021,31 @@ namespace PolarisBiosEditor
                     ListViewItem container = tableROM.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
-                    var num = (int)int32.ConvertFromString(value);
+
 
                     if (name == "VendorID")
                     {
+                        var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usVendorID = (UInt16)num;
                     }
                     else if (name == "DeviceID")
                     {
+                        var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usDeviceID = (UInt16)num;
                     }
                     else if (name == "Sub ID")
                     {
+                        var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usSubsystemID = (UInt16)num;
                     }
                     else if (name == "Sub VendorID")
                     {
+                        var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usSubsystemVendorID = (UInt16)num;
                     }
                     else if (name == "Firmware Signature")
                     {
-                        atom_rom_header.uaFirmWareSignature = (UInt32)num;
+                        atom_rom_header.uaFirmWareSignature = value.ToCharArray();
                     }
                 }
 
@@ -1043,11 +1130,11 @@ namespace PolarisBiosEditor
                     {
                         atom_fan_table.usTMax = (UInt16)(num * 100);
                     }
-					else if (name == "Target Temp. (C)")
+                    else if (name == "Target Temp. (C)")
                     {
                         atom_fan_table.ucTargetTemperature = (Byte)num;
                     }
-					else if (name == "Legacy or Fuzzy Fan Mode")
+                    else if (name == "Legacy or Fuzzy Fan Mode")
                     {
                         atom_fan_table.ucFanControlMode = (Byte)(num);
                     }
@@ -1163,6 +1250,9 @@ namespace PolarisBiosEditor
                     setBytesAtPosition(buffer, atom_vram_timing_offset + Marshal.SizeOf(typeof(ATOM_VRAM_TIMING_ENTRY)) * i, getBytes(atom_vram_timing_entries[i]));
                 }
 
+                BIOS_BootupMessage = txtBIOSBootupMessage.Text.Substring(0, BIOS_BootupMessage.Length);
+
+                setBytesAtPosition(buffer, atom_rom_header.usBIOS_BootupMessageOffset+2, Encoding.ASCII.GetBytes(BIOS_BootupMessage));
                 fixChecksum(true);
                 bw.Write(buffer);
 
@@ -1403,5 +1493,3 @@ namespace PolarisBiosEditor
         }
     }
 }
-
-
