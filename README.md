@@ -1,4 +1,4 @@
-# PolarisBiosEditor v1.6.6
+# PolarisBiosEditor v1.6.7
 
 If you don't trust the EXE just build on Linux with ```sh build.sh```. Quick and easy.
 
