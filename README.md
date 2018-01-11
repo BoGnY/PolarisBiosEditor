@@ -1,8 +1,8 @@
 # PolarisBiosEditor v1.6.7
 
-## Important: You need to disable SecureBoot / Activate CSM in your
-## Motherboard UEFI because the modification will make
-## the cryptographic signature invalid.
+### Important: You need to disable SecureBoot / Activate CSM in your
+### Motherboard UEFI because the modification will make
+### the cryptographic signature invalid.
 
 If you don't trust the EXE just build on Linux with ```sh build.sh```. Quick and easy.
 
