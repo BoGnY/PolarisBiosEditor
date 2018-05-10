@@ -479,7 +479,7 @@ namespace PolarisBiosEditor
             {
 
                 WebClient myWebClient = new WebClient();
-                Stream myStream = myWebClient.OpenRead("https://raw.githubusercontent.com/jaschaknack/PolarisBiosEditor/master/version");
+                Stream myStream = myWebClient.OpenRead("https://raw.githubusercontent.com/BoGnY/PolarisBiosEditor/master/version");
                 StreamReader sr = new StreamReader(myStream);
                 string newVersion = sr.ReadToEnd().Trim();
                 if (!newVersion.Equals(version)) {
@@ -487,7 +487,7 @@ namespace PolarisBiosEditor
                 }
                 myStream.Close();
 
-                myStream = myWebClient.OpenRead("https://raw.githubusercontent.com/jaschaknack/PolarisBiosEditor/master/notice");
+                myStream = myWebClient.OpenRead("https://raw.githubusercontent.com/BoGnY/PolarisBiosEditor/master/notice");
                 sr = new StreamReader(myStream);
                 string notice = sr.ReadToEnd().Trim();
 
@@ -1487,7 +1487,7 @@ namespace PolarisBiosEditor
             }
             if (samsung_index == -1 && hynix_2_index == -1 && hynix_1_index == -1 && elpida_index == -1 && micron_index == -1)
             {
-                MessageBox.Show("Sorry, no supported memory found. If you think this is an error, please file a bugreport @ github.com/jaschaknack/PolarisBiosEditor");
+                MessageBox.Show("Sorry, no supported memory found. If you think this is an error, please file a bugreport @ github.com/BoGnY/PolarisBiosEditor");
             }
 
         }
