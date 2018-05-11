@@ -10,16 +10,11 @@ using System.Linq;
 using System.ComponentModel;
 using System.Net;
 
-namespace PolarisBiosEditor
-{
-    public partial class PolarisBiosEditor : Form
-    {
-
-        /* DATA */
+namespace PolarisBiosEditor {
+    public partial class PolarisBiosEditor : Form {
 
         string version = "1.6.7";
         string programTitle = "PolarisBiosEditor";
-
 
         string[] manufacturers = new string[] {
             "SAMSUNG",
@@ -61,8 +56,7 @@ namespace PolarisBiosEditor
         Dictionary<string, string> rc = new Dictionary<string, string>();
 
         [StructLayout(LayoutKind.Explicit, Size = 96, CharSet = CharSet.Ansi)]
-        public class VRAM_TIMING_RX
-        {
+        public class VRAM_TIMING_RX {
 
         }
 
@@ -109,16 +103,14 @@ namespace PolarisBiosEditor
         int atom_vram_timing_offset;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_COMMON_TABLE_HEADER
-        {
+        struct ATOM_COMMON_TABLE_HEADER {
             Int16 usStructureSize;
             Byte ucTableFormatRevision;
             Byte ucTableContentRevision;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_ROM_HEADER
-        {
+        struct ATOM_ROM_HEADER {
             public ATOM_COMMON_TABLE_HEADER sHeader;
             //public UInt32 uaFirmWareSignature;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x4)]
@@ -146,8 +138,7 @@ namespace PolarisBiosEditor
         String BIOS_BootupMessage;
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_DATA_TABLES
-        {
+        struct ATOM_DATA_TABLES {
             public ATOM_COMMON_TABLE_HEADER sHeader;
             public UInt16 UtilityPipeLine;
             public UInt16 MultimediaCapabilityInfo;
@@ -187,8 +178,7 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        unsafe struct ATOM_POWERPLAY_TABLE
-        {
+        unsafe struct ATOM_POWERPLAY_TABLE {
             public ATOM_COMMON_TABLE_HEADER sHeader;
             public Byte ucTableRevision;
             public UInt16 usTableSize;
@@ -220,8 +210,7 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_MCLK_ENTRY
-        {
+        struct ATOM_MCLK_ENTRY {
             public Byte ucVddcInd;
             public UInt16 usVddci;
             public UInt16 usVddgfxOffset;
@@ -231,16 +220,14 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_MCLK_TABLE
-        {
+        struct ATOM_MCLK_TABLE {
             public Byte ucRevId;
             public Byte ucNumEntries;
             // public ATOM_MCLK_ENTRY entries[ucNumEntries];
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_SCLK_ENTRY
-        {
+        struct ATOM_SCLK_ENTRY {
             public Byte ucVddInd;
             public UInt16 usVddcOffset;
             public UInt32 ulSclk;
@@ -252,16 +239,14 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_SCLK_TABLE
-        {
+        struct ATOM_SCLK_TABLE {
             public Byte ucRevId;
             public Byte ucNumEntries;
             // public ATOM_SCLK_ENTRY entries[ucNumEntries];
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_VOLTAGE_ENTRY
-        {
+        struct ATOM_VOLTAGE_ENTRY {
             public UInt16 usVdd;
             public UInt16 usCACLow;
             public UInt16 usCACMid;
@@ -269,16 +254,14 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_VOLTAGE_TABLE
-        {
+        struct ATOM_VOLTAGE_TABLE {
             public Byte ucRevId;
             public Byte ucNumEntries;
             // public ATOM_VOLTAGE_ENTRY entries[ucNumEntries];
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_FAN_TABLE
-        {
+        struct ATOM_FAN_TABLE {
             public Byte ucRevId;
             public Byte ucTHyst;
             public UInt16 usTMin;
@@ -306,8 +289,7 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_POWERTUNE_TABLE
-        {
+        struct ATOM_POWERTUNE_TABLE {
             public Byte ucRevId;
             public UInt16 usTDP;
             public UInt16 usConfigurableTDP;
@@ -339,16 +321,14 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_VRAM_TIMING_ENTRY
-        {
+        struct ATOM_VRAM_TIMING_ENTRY {
             public UInt32 ulClkRange;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x30)]
             public Byte[] ucLatency;
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_VRAM_ENTRY
-        {
+        struct ATOM_VRAM_ENTRY {
             public UInt32 ulChannelMapCfg;
             public UInt16 usModuleSize;
             public UInt16 usMcRamCfg;
@@ -379,8 +359,7 @@ namespace PolarisBiosEditor
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct ATOM_VRAM_INFO
-        {
+        struct ATOM_VRAM_INFO {
             public ATOM_COMMON_TABLE_HEADER sHeader;
             public UInt16 usMemAdjustTblOffset;
             public UInt16 usMemClkPatchTblOffset;
@@ -395,16 +374,13 @@ namespace PolarisBiosEditor
             // public ATOM_VRAM_ENTRY aVramInfo[ucNumOfVRAMModule];
         }
 
-
         [STAThread]
-        static void Main(string[] args)
-        {
+        static void Main (string[] args) {
             PolarisBiosEditor pbe = new PolarisBiosEditor();
             Application.Run(pbe);
         }
 
-        static byte[] getBytes(object obj)
-        {
+        static byte[] getBytes (object obj) {
             int size = Marshal.SizeOf(obj);
             byte[] arr = new byte[size];
             IntPtr ptr = Marshal.AllocHGlobal(size);
@@ -416,8 +392,7 @@ namespace PolarisBiosEditor
             return arr;
         }
 
-        static T fromBytes<T>(byte[] arr)
-        {
+        static T fromBytes<T> (byte[] arr) {
             T obj = default(T);
             int size = Marshal.SizeOf(obj);
             IntPtr ptr = Marshal.AllocHGlobal(size);
@@ -429,55 +404,43 @@ namespace PolarisBiosEditor
             return obj;
         }
 
-        public void setBytesAtPosition(byte[] dest, int ptr, byte[] src)
-        {
-            for (var i = 0; i < src.Length; i++)
-            {
+        public void setBytesAtPosition (byte[] dest, int ptr, byte[] src) {
+            for (var i = 0; i < src.Length; i++) {
                 dest[ptr + i] = src[i];
             }
         }
 
         private ListViewItem handler;
 
-        private void listView_ChangeSelection(object sender, EventArgs e)
-        {
+        private void listView_ChangeSelection (object sender, EventArgs e) {
             ListView lb = sender as ListView;
             String sel_name = lb.SelectedItems[0].Text;
 
-            for (var i = 0; i < lb.Items.Count; i++)
-            {
-
+            for (var i = 0; i < lb.Items.Count; i++) {
                 ListViewItem container = lb.Items[i];
                 var name = container.Text;
                 var value = container.SubItems[1].Text;
 
-                if (name == sel_name)
-                {
+                if (name == sel_name) {
                     editSubItem1.Text = name;
                     editSubItem2.Text = value;
                     handler = container;
                 }
-
             }
         }
 
-        private void apply_Click(object sender, EventArgs e)
-        {
-            if (handler != null)
-            {
+        private void apply_Click (object sender, EventArgs e) {
+            if (handler != null) {
                 handler.Text = editSubItem1.Text;
                 handler.SubItems[1].Text = editSubItem2.Text;
             }
         }
 
-        public PolarisBiosEditor()
-        {
+        public PolarisBiosEditor () {
             InitializeComponent();
-            this.Text = this.programTitle + " " + this.version;
+            Text = programTitle + " " + version;
 
-            try
-            {
-
+            try {
                 WebClient myWebClient = new WebClient();
                 Stream myStream = myWebClient.OpenRead("https://raw.githubusercontent.com/BoGnY/PolarisBiosEditor/master/version");
                 StreamReader sr = new StreamReader(myStream);
@@ -496,19 +459,15 @@ namespace PolarisBiosEditor
 
                 result = MessageBox.Show(notice + "\n\nClick Yes button to copy to clipboard", "A message from the developer", buttons);
 
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-
+                if (result == DialogResult.OK) {
                     Clipboard.SetText(notice);
-
                 }
 
                 myStream.Close();
-
                 hasInternetAccess = true;
 
-            } catch (System.Net.WebException) {
-                this.Text += " (offline mode)";
+            } catch (WebException) {
+                Text += " (offline mode)";
             }
 
             rc.Add("MT51J256M3", "MICRON");
@@ -542,36 +501,27 @@ namespace PolarisBiosEditor
             //MessageBox.Show("Modifying your BIOS is dangerous and could cause irreversible damage to your GPU.\nUsing a modified BIOS may void your warranty.\nThe author will not be held accountable for your actions.", "DISCLAIMER", MessageBoxButtons.OK, MessageBoxImage.Warning);
         }
 
-        private void PolarisBiosEditor_Load(object sender, EventArgs e)
-        {
+        private void PolarisBiosEditor_Load (object sender, EventArgs e) {
 
         }
 
-        private void editSubItem2_Click(object sender, EventArgs e)
-        {
+        private void editSubItem2_Click (object sender, EventArgs e) {
             MouseEventArgs me = (MouseEventArgs)e;
-            if (me.Button == MouseButtons.Right)
-            {
-                if (editSubItem2.Text.Length == 96)
-                {
+            if (me.Button == MouseButtons.Right) {
+                if (editSubItem2.Text.Length == 96) {
                     byte[] decode = StringToByteArray(editSubItem2.Text);
                     MessageBox.Show("Decode Memory Timings " + decode + " / not implemented yet!");
                 }
-
-
             }
         }
 
-        private void OpenFileDialog_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("OpenFileDialog");
+        private void OpenFileDialog_Click (object sender, EventArgs e) {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "BIOS (.rom)|*.rom|All Files (*.*)|*.*";
             openFileDialog.FilterIndex = 1;
             openFileDialog.Multiselect = false;
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
+            if (openFileDialog.ShowDialog() == DialogResult.OK) {
                 save.Enabled = false;
 
                 tableROM.Items.Clear();
@@ -583,13 +533,11 @@ namespace PolarisBiosEditor
                 tableVRAM.Items.Clear();
                 tableVRAM_TIMING.Items.Clear();
 
-                System.IO.Stream fileStream = openFileDialog.OpenFile();
-                if ((fileStream.Length != 524288) && (fileStream.Length != 524288 / 2))
-                {
+                Stream fileStream = openFileDialog.OpenFile();
+                if ((fileStream.Length != 524288) && (fileStream.Length != 524288 / 2)) {
                     MessageBox.Show("This BIOS is non standard size.\nFlashing this BIOS may corrupt your graphics card.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                using (BinaryReader br = new BinaryReader(fileStream))
-                {
+                using (BinaryReader br = new BinaryReader(fileStream)) {
                     buffer = br.ReadBytes((int)fileStream.Length);
 
                     atom_rom_header_offset = getValueAtPosition(16, atom_rom_header_ptr);
@@ -598,27 +546,24 @@ namespace PolarisBiosEditor
                     fixChecksum(false);
 
                     String firmwareSignature = new string(atom_rom_header.uaFirmWareSignature);
-                    if (!firmwareSignature.Equals("ATOM"))
-                    {
+                    if (!firmwareSignature.Equals("ATOM")) {
                         MessageBox.Show("WARNING! BIOS Signature is not valid. Only continue if you are 100% sure what you are doing!");
                     }
 
                     DialogResult msgSuported = DialogResult.Yes;
-                    if (!supportedDeviceID.Contains(deviceID))
-                    {
+                    if (!supportedDeviceID.Contains(deviceID)) {
                         msgSuported = MessageBox.Show("Unsupported DeviceID 0x" + deviceID + " - Continue?", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     }
-                    if (msgSuported == DialogResult.Yes)
-                    {
+
+                    if (msgSuported == DialogResult.Yes) {
                         StringBuilder sb = new StringBuilder();
 
-                        Int32 ptr = atom_rom_header.usBIOS_BootupMessageOffset+2;
-                        while (ptr != -1)
-                        {
+                        Int32 ptr = atom_rom_header.usBIOS_BootupMessageOffset + 2;
+                        while (ptr != -1) {
                             Char c = (Char)buffer[ptr];
                             if (c == '\0') {
                                 ptr = -1;
-                            } else if(c == '\n' || c == '\r') {
+                            } else if (c == '\n' || c == '\r') {
                                 ptr++;
                             } else {
                                 sb.Append(c);
@@ -644,24 +589,21 @@ namespace PolarisBiosEditor
                         atom_mclk_table_offset = atom_data_table.PowerPlayInfo + atom_powerplay_table.usMclkDependencyTableOffset;
                         atom_mclk_table = fromBytes<ATOM_MCLK_TABLE>(buffer.Skip(atom_mclk_table_offset).ToArray());
                         atom_mclk_entries = new ATOM_MCLK_ENTRY[atom_mclk_table.ucNumEntries];
-                        for (var i = 0; i < atom_mclk_entries.Length; i++)
-                        {
+                        for (var i = 0; i < atom_mclk_entries.Length; i++) {
                             atom_mclk_entries[i] = fromBytes<ATOM_MCLK_ENTRY>(buffer.Skip(atom_mclk_table_offset + Marshal.SizeOf(typeof(ATOM_MCLK_TABLE)) + Marshal.SizeOf(typeof(ATOM_MCLK_ENTRY)) * i).ToArray());
                         }
 
                         atom_sclk_table_offset = atom_data_table.PowerPlayInfo + atom_powerplay_table.usSclkDependencyTableOffset;
                         atom_sclk_table = fromBytes<ATOM_SCLK_TABLE>(buffer.Skip(atom_sclk_table_offset).ToArray());
                         atom_sclk_entries = new ATOM_SCLK_ENTRY[atom_sclk_table.ucNumEntries];
-                        for (var i = 0; i < atom_sclk_entries.Length; i++)
-                        {
+                        for (var i = 0; i < atom_sclk_entries.Length; i++) {
                             atom_sclk_entries[i] = fromBytes<ATOM_SCLK_ENTRY>(buffer.Skip(atom_sclk_table_offset + Marshal.SizeOf(typeof(ATOM_SCLK_TABLE)) + Marshal.SizeOf(typeof(ATOM_SCLK_ENTRY)) * i).ToArray());
                         }
 
                         atom_vddc_table_offset = atom_data_table.PowerPlayInfo + atom_powerplay_table.usVddcLookupTableOffset;
                         atom_vddc_table = fromBytes<ATOM_VOLTAGE_TABLE>(buffer.Skip(atom_vddc_table_offset).ToArray());
                         atom_vddc_entries = new ATOM_VOLTAGE_ENTRY[atom_vddc_table.ucNumEntries];
-                        for (var i = 0; i < atom_vddc_table.ucNumEntries; i++)
-                        {
+                        for (var i = 0; i < atom_vddc_table.ucNumEntries; i++) {
                             atom_vddc_entries[i] = fromBytes<ATOM_VOLTAGE_ENTRY>(buffer.Skip(atom_vddc_table_offset + Marshal.SizeOf(typeof(ATOM_VOLTAGE_TABLE)) + Marshal.SizeOf(typeof(ATOM_VOLTAGE_ENTRY)) * i).ToArray());
                         }
 
@@ -669,22 +611,19 @@ namespace PolarisBiosEditor
                         atom_vram_info = fromBytes<ATOM_VRAM_INFO>(buffer.Skip(atom_vram_info_offset).ToArray());
                         atom_vram_entries = new ATOM_VRAM_ENTRY[atom_vram_info.ucNumOfVRAMModule];
                         var atom_vram_entry_offset = atom_vram_info_offset + Marshal.SizeOf(typeof(ATOM_VRAM_INFO));
-                        for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++)
-                        {
+                        for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++) {
                             atom_vram_entries[i] = fromBytes<ATOM_VRAM_ENTRY>(buffer.Skip(atom_vram_entry_offset).ToArray());
                             atom_vram_entry_offset += atom_vram_entries[i].usModuleSize;
                         }
 
                         atom_vram_timing_offset = atom_vram_info_offset + atom_vram_info.usMemClkPatchTblOffset + 0x2E;
                         atom_vram_timing_entries = new ATOM_VRAM_TIMING_ENTRY[MAX_VRAM_ENTRIES];
-                        for (var i = 0; i < MAX_VRAM_ENTRIES; i++)
-                        {
+                        for (var i = 0; i < MAX_VRAM_ENTRIES; i++) {
                             atom_vram_timing_entries[i] = fromBytes<ATOM_VRAM_TIMING_ENTRY>(buffer.Skip(atom_vram_timing_offset + Marshal.SizeOf(typeof(ATOM_VRAM_TIMING_ENTRY)) * i).ToArray());
 
                             // atom_vram_timing_entries have an undetermined length
                             // attempt to determine the last entry in the array
-                            if (atom_vram_timing_entries[i].ulClkRange == 0)
-                            {
+                            if (atom_vram_timing_entries[i].ulClkRange == 0) {
                                 Array.Resize(ref atom_vram_timing_entries, i);
                                 break;
                             }
@@ -844,8 +783,7 @@ namespace PolarisBiosEditor
                         ));
 
                         tableGPU.Items.Clear();
-                        for (var i = 0; i < atom_sclk_table.ucNumEntries; i++)
-                        {
+                        for (var i = 0; i < atom_sclk_table.ucNumEntries; i++) {
                             tableGPU.Items.Add(new ListViewItem(new string[] {
                                 Convert.ToString (atom_sclk_entries [i].ulSclk / 100),
                                 Convert.ToString (atom_vddc_entries [atom_sclk_entries [i].ucVddInd].usVdd)
@@ -854,8 +792,7 @@ namespace PolarisBiosEditor
                         }
 
                         tableMEMORY.Items.Clear();
-                        for (var i = 0; i < atom_mclk_table.ucNumEntries; i++)
-                        {
+                        for (var i = 0; i < atom_mclk_table.ucNumEntries; i++) {
                             tableMEMORY.Items.Add(new ListViewItem(new string[] {
                                 Convert.ToString (atom_mclk_entries [i].ulMclk / 100),
                                 Convert.ToString (atom_mclk_entries [i].usMvdd)
@@ -864,19 +801,14 @@ namespace PolarisBiosEditor
                         }
 
                         listVRAM.Items.Clear();
-                        for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++)
-                        {
-                            if (atom_vram_entries[i].strMemPNString[0] != 0)
-                            {
+                        for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++) {
+                            if (atom_vram_entries[i].strMemPNString[0] != 0) {
 
                                 var mem_id = Encoding.UTF8.GetString(atom_vram_entries[i].strMemPNString).Substring(0, 10);
                                 string mem_vendor;
-                                if (rc.ContainsKey(mem_id))
-                                {
+                                if (rc.ContainsKey(mem_id)) {
                                     mem_vendor = rc[mem_id];
-                                }
-                                else
-                                {
+                                } else {
                                     mem_vendor = "UNKNOWN";
                                 }
 
@@ -887,8 +819,7 @@ namespace PolarisBiosEditor
                         atom_vram_index = listVRAM.SelectedIndex;
 
                         tableVRAM_TIMING.Items.Clear();
-                        for (var i = 0; i < atom_vram_timing_entries.Length; i++)
-                        {
+                        for (var i = 0; i < atom_vram_timing_entries.Length; i++) {
                             uint tbl = atom_vram_timing_entries[i].ulClkRange >> 24;
                             tableVRAM_TIMING.Items.Add(new ListViewItem(new string[] {
                                 tbl.ToString () + ":" + (atom_vram_timing_entries [i].ulClkRange & 0x00FFFFFF) / 100,
@@ -909,6 +840,7 @@ namespace PolarisBiosEditor
                     fileStream.Close();
                 }
             }
+
             tableROM.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             tableROM.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
 
@@ -934,13 +866,10 @@ namespace PolarisBiosEditor
             tableVRAM_TIMING.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
-        public Int32 getValueAtPosition(int bits, int position, bool isFrequency = false)
-        {
+        public Int32 getValueAtPosition (int bits, int position, bool isFrequency = false) {
             int value = 0;
-            if (position <= buffer.Length - 4)
-            {
-                switch (bits)
-                {
+            if (position <= buffer.Length - 4) {
+                switch (bits) {
                     case 8:
                     default:
                         value = buffer[position];
@@ -962,14 +891,11 @@ namespace PolarisBiosEditor
             return -1;
         }
 
-        public bool setValueAtPosition(int value, int bits, int position, bool isFrequency = false)
-        {
+        public bool setValueAtPosition (int value, int bits, int position, bool isFrequency = false) {
             if (isFrequency)
                 value *= 100;
-            if (position <= buffer.Length - 4)
-            {
-                switch (bits)
-                {
+            if (position <= buffer.Length - 4) {
+                switch (bits) {
                     case 8:
                     default:
                         buffer[position] = (byte)value;
@@ -995,181 +921,119 @@ namespace PolarisBiosEditor
             return false;
         }
 
-        private bool setValueAtPosition(String text, int bits, int position, bool isFrequency = false)
-        {
+        private bool setValueAtPosition (String text, int bits, int position, bool isFrequency = false) {
             int value = 0;
-            if (!int.TryParse(text, out value))
-            {
+            if (!int.TryParse(text, out value)) {
                 return false;
             }
             return setValueAtPosition(value, bits, position, isFrequency);
         }
 
-        private void SaveFileDialog_Click(object sender, EventArgs e)
-        {
+        private void SaveFileDialog_Click (object sender, EventArgs e) {
             SaveFileDialog SaveFileDialog = new SaveFileDialog();
             SaveFileDialog.Title = "Save As";
             SaveFileDialog.Filter = "BIOS (*.rom)|*.rom";
 
-            if (SaveFileDialog.ShowDialog() == DialogResult.OK)
-            {
+            if (SaveFileDialog.ShowDialog() == DialogResult.OK) {
                 FileStream fs = new FileStream(SaveFileDialog.FileName, FileMode.Create);
                 BinaryWriter bw = new BinaryWriter(fs);
 
-                for (var i = 0; i < tableROM.Items.Count; i++)
-                {
+                for (var i = 0; i < tableROM.Items.Count; i++) {
                     ListViewItem container = tableROM.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
 
-
-                    if (name == "VendorID")
-                    {
+                    if (name == "VendorID") {
                         var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usVendorID = (UInt16)num;
-                    }
-                    else if (name == "DeviceID")
-                    {
+                    } else if (name == "DeviceID") {
                         var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usDeviceID = (UInt16)num;
-                    }
-                    else if (name == "Sub ID")
-                    {
+                    } else if (name == "Sub ID") {
                         var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usSubsystemID = (UInt16)num;
-                    }
-                    else if (name == "Sub VendorID")
-                    {
+                    } else if (name == "Sub VendorID") {
                         var num = (int)int32.ConvertFromString(value);
                         atom_rom_header.usSubsystemVendorID = (UInt16)num;
-                    }
-                    else if (name == "Firmware Signature")
-                    {
+                    } else if (name == "Firmware Signature") {
                         atom_rom_header.uaFirmWareSignature = value.ToCharArray();
                     }
                 }
 
-                for (var i = 0; i < tablePOWERPLAY.Items.Count; i++)
-                {
+                for (var i = 0; i < tablePOWERPLAY.Items.Count; i++) {
                     ListViewItem container = tablePOWERPLAY.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
                     var num = (int)int32.ConvertFromString(value);
 
-                    if (name == "Max GPU Freq. (MHz)")
-                    {
+                    if (name == "Max GPU Freq. (MHz)") {
                         atom_powerplay_table.ulMaxODEngineClock = (UInt32)(num * 100);
-                    }
-                    else if (name == "Max Memory Freq. (MHz)")
-                    {
+                    } else if (name == "Max Memory Freq. (MHz)") {
                         atom_powerplay_table.ulMaxODMemoryClock = (UInt32)(num * 100);
-                    }
-                    else if (name == "Power Control Limit (%)")
-                    {
+                    } else if (name == "Power Control Limit (%)") {
                         atom_powerplay_table.usPowerControlLimit = (UInt16)num;
                     }
                 }
 
-                for (var i = 0; i < tablePOWERTUNE.Items.Count; i++)
-                {
+                for (var i = 0; i < tablePOWERTUNE.Items.Count; i++) {
                     ListViewItem container = tablePOWERTUNE.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
                     var num = (int)int32.ConvertFromString(value);
 
-                    if (name == "TDP (W)")
-                    {
+                    if (name == "TDP (W)") {
                         atom_powertune_table.usTDP = (UInt16)num;
-                    }
-                    else if (name == "TDC (A)")
-                    {
+                    } else if (name == "TDC (A)") {
                         atom_powertune_table.usTDC = (UInt16)num;
-                    }
-                    else if (name == "Max Power Limit (W)")
-                    {
+                    } else if (name == "Max Power Limit (W)") {
                         atom_powertune_table.usMaximumPowerDeliveryLimit = (UInt16)num;
-                    }
-                    else if (name == "Max Temp. (C)")
-                    {
+                    } else if (name == "Max Temp. (C)") {
                         atom_powertune_table.usTjMax = (UInt16)num;
-                    }
-                    else if (name == "Shutdown Temp. (C)")
-                    {
+                    } else if (name == "Shutdown Temp. (C)") {
                         atom_powertune_table.usSoftwareShutdownTemp = (UInt16)num;
-                    }
-                    else if (name == "Hotspot Temp. (C)")
-                    {
+                    } else if (name == "Hotspot Temp. (C)") {
                         atom_powertune_table.usTemperatureLimitHotspot = (UInt16)num;
                     }
                 }
 
-                for (var i = 0; i < tableFAN.Items.Count; i++)
-                {
+                for (var i = 0; i < tableFAN.Items.Count; i++) {
                     ListViewItem container = tableFAN.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
                     var num = (int)int32.ConvertFromString(value);
 
-                    if (name == "Temp. Hysteresis")
-                    {
+                    if (name == "Temp. Hysteresis") {
                         atom_fan_table.ucTHyst = (Byte)num;
-                    }
-                    else if (name == "Min Temp. (C)")
-                    {
+                    } else if (name == "Min Temp. (C)") {
                         atom_fan_table.usTMin = (UInt16)(num * 100);
-                    }
-                    else if (name == "Med Temp. (C)")
-                    {
+                    } else if (name == "Med Temp. (C)") {
                         atom_fan_table.usTMed = (UInt16)(num * 100);
-                    }
-                    else if (name == "High Temp. (C)")
-                    {
+                    } else if (name == "High Temp. (C)") {
                         atom_fan_table.usTHigh = (UInt16)(num * 100);
-                    }
-                    else if (name == "Max Temp. (C)")
-                    {
+                    } else if (name == "Max Temp. (C)") {
                         atom_fan_table.usTMax = (UInt16)(num * 100);
-                    }
-                    else if (name == "Target Temp. (C)")
-                    {
+                    } else if (name == "Target Temp. (C)") {
                         atom_fan_table.ucTargetTemperature = (Byte)num;
-                    }
-                    else if (name == "Legacy or Fuzzy Fan Mode")
-                    {
+                    } else if (name == "Legacy or Fuzzy Fan Mode") {
                         atom_fan_table.ucFanControlMode = (Byte)(num);
-                    }
-                    else if (name == "Min PWM (%)")
-                    {
+                    } else if (name == "Min PWM (%)") {
                         atom_fan_table.usPWMMin = (UInt16)(num * 100);
-                    }
-                    else if (name == "Med PWM (%)")
-                    {
+                    } else if (name == "Med PWM (%)") {
                         atom_fan_table.usPWMMed = (UInt16)(num * 100);
-                    }
-                    else if (name == "High PWM (%)")
-                    {
+                    } else if (name == "High PWM (%)") {
                         atom_fan_table.usPWMHigh = (UInt16)(num * 100);
-                    }
-                    else if (name == "Max PWM (%)")
-                    {
+                    } else if (name == "Max PWM (%)") {
                         atom_fan_table.usFanPWMMax = (UInt16)num;
-                    }
-                    else if (name == "Max RPM")
-                    {
+                    } else if (name == "Max RPM") {
                         atom_fan_table.usFanRPMMax = (UInt16)num;
-                    }
-                    else if (name == "Sensitivity")
-                    {
+                    } else if (name == "Sensitivity") {
                         atom_fan_table.usFanOutputSensitivity = (UInt16)num;
-                    }
-                    else if (name == "Acoustic Limit (MHz)")
-                    {
+                    } else if (name == "Acoustic Limit (MHz)") {
                         atom_fan_table.ulMinFanSCLKAcousticLimit = (UInt32)(num * 100);
                     }
                 }
 
-                for (var i = 0; i < tableGPU.Items.Count; i++)
-                {
+                for (var i = 0; i < tableGPU.Items.Count; i++) {
                     ListViewItem container = tableGPU.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
@@ -1178,14 +1042,12 @@ namespace PolarisBiosEditor
 
                     atom_sclk_entries[i].ulSclk = (UInt32)mhz;
                     atom_vddc_entries[atom_sclk_entries[i].ucVddInd].usVdd = (UInt16)mv;
-                    if (mv < 0xFF00)
-                    {
+                    if (mv < 0xFF00) {
                         atom_sclk_entries[i].usVddcOffset = 0;
                     }
                 }
 
-                for (var i = 0; i < tableMEMORY.Items.Count; i++)
-                {
+                for (var i = 0; i < tableMEMORY.Items.Count; i++) {
                     ListViewItem container = tableMEMORY.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
@@ -1197,20 +1059,16 @@ namespace PolarisBiosEditor
                 }
 
                 updateVRAM_entries();
-                for (var i = 0; i < tableVRAM_TIMING.Items.Count; i++)
-                {
+                for (var i = 0; i < tableVRAM_TIMING.Items.Count; i++) {
                     ListViewItem container = tableVRAM_TIMING.Items[i];
                     var name = container.Text;
                     var value = container.SubItems[1].Text;
                     var arr = StringToByteArray(value);
                     UInt32 mhz;
-                    if (name.IndexOf(':') > 0)
-                    {
+                    if (name.IndexOf(':') > 0) {
                         mhz = (UInt32)uint32.ConvertFromString(name.Substring(name.IndexOf(':') + 1)) * 100;
                         mhz += (UInt32)uint32.ConvertFromString(name.Substring(0, name.IndexOf(':'))) << 24; // table id
-                    }
-                    else
-                    {
+                    } else {
                         mhz = (UInt32)uint32.ConvertFromString(name) * 100;
                     }
                     atom_vram_timing_entries[i].ulClkRange = mhz;
@@ -1222,37 +1080,32 @@ namespace PolarisBiosEditor
                 setBytesAtPosition(buffer, atom_powertune_offset, getBytes(atom_powertune_table));
                 setBytesAtPosition(buffer, atom_fan_offset, getBytes(atom_fan_table));
 
-                for (var i = 0; i < atom_mclk_table.ucNumEntries; i++)
-                {
+                for (var i = 0; i < atom_mclk_table.ucNumEntries; i++) {
                     setBytesAtPosition(buffer, atom_mclk_table_offset + Marshal.SizeOf(typeof(ATOM_MCLK_TABLE)) + Marshal.SizeOf(typeof(ATOM_MCLK_ENTRY)) * i, getBytes(atom_mclk_entries[i]));
                 }
 
-                for (var i = 0; i < atom_sclk_table.ucNumEntries; i++)
-                {
+                for (var i = 0; i < atom_sclk_table.ucNumEntries; i++) {
                     setBytesAtPosition(buffer, atom_sclk_table_offset + Marshal.SizeOf(typeof(ATOM_SCLK_TABLE)) + Marshal.SizeOf(typeof(ATOM_SCLK_ENTRY)) * i, getBytes(atom_sclk_entries[i]));
                 }
 
-                for (var i = 0; i < atom_vddc_table.ucNumEntries; i++)
-                {
+                for (var i = 0; i < atom_vddc_table.ucNumEntries; i++) {
                     setBytesAtPosition(buffer, atom_vddc_table_offset + Marshal.SizeOf(typeof(ATOM_VOLTAGE_TABLE)) + Marshal.SizeOf(typeof(ATOM_VOLTAGE_ENTRY)) * i, getBytes(atom_vddc_entries[i]));
                 }
 
                 var atom_vram_entry_offset = atom_vram_info_offset + Marshal.SizeOf(typeof(ATOM_VRAM_INFO));
-                for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++)
-                {
+                for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++) {
                     setBytesAtPosition(buffer, atom_vram_entry_offset, getBytes(atom_vram_entries[i]));
                     atom_vram_entry_offset += atom_vram_entries[i].usModuleSize;
                 }
 
                 atom_vram_timing_offset = atom_vram_info_offset + atom_vram_info.usMemClkPatchTblOffset + 0x2E;
-                for (var i = 0; i < atom_vram_timing_entries.Length; i++)
-                {
+                for (var i = 0; i < atom_vram_timing_entries.Length; i++) {
                     setBytesAtPosition(buffer, atom_vram_timing_offset + Marshal.SizeOf(typeof(ATOM_VRAM_TIMING_ENTRY)) * i, getBytes(atom_vram_timing_entries[i]));
                 }
 
                 BIOS_BootupMessage = txtBIOSBootupMessage.Text.Substring(0, BIOS_BootupMessage.Length);
 
-                setBytesAtPosition(buffer, atom_rom_header.usBIOS_BootupMessageOffset+2, Encoding.ASCII.GetBytes(BIOS_BootupMessage));
+                setBytesAtPosition(buffer, atom_rom_header.usBIOS_BootupMessageOffset + 2, Encoding.ASCII.GetBytes(BIOS_BootupMessage));
                 fixChecksum(true);
                 bw.Write(buffer);
 
@@ -1261,90 +1114,68 @@ namespace PolarisBiosEditor
             }
         }
 
-        private void fixChecksum(bool save)
-        {
+        private void fixChecksum (bool save) {
             Byte checksum = buffer[atom_rom_checksum_offset];
             int size = buffer[0x02] * 512;
             Byte offset = 0;
 
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 offset += buffer[i];
             }
-            if (checksum == (buffer[atom_rom_checksum_offset] - offset))
-            {
+            if (checksum == (buffer[atom_rom_checksum_offset] - offset)) {
                 txtChecksum.ForeColor = Color.Green;
-            }
-            else if (!save)
-            {
+            } else if (!save) {
                 txtChecksum.ForeColor = Color.Red;
                 MessageBox.Show("Invalid checksum - Save to fix!", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            if (save)
-            {
+            if (save) {
                 buffer[atom_rom_checksum_offset] -= offset;
                 txtChecksum.ForeColor = Color.Green;
             }
             txtChecksum.Text = "0x" + buffer[atom_rom_checksum_offset].ToString("X");
         }
 
-        public static string ByteArrayToString(byte[] ba)
-        {
+        public static string ByteArrayToString (byte[] ba) {
             string hex = BitConverter.ToString(ba);
             return hex.Replace("-", "");
         }
 
-        public static byte[] StringToByteArray(String hex)
-        {
-            if (hex.Length % 2 != 0)
-            {
+        public static byte[] StringToByteArray (String hex) {
+            if (hex.Length % 2 != 0) {
                 MessageBox.Show("Invalid hex string", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new InvalidDataException();
             }
             byte[] bytes = new byte[hex.Length / 2];
-            for (int i = 0; i < hex.Length; i += 2)
-            {
+            for (int i = 0; i < hex.Length; i += 2) {
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
             }
             return bytes;
         }
 
-        public void updateVRAM_entries()
-        {
-
-            for (var i = 0; i < tableVRAM.Items.Count; i++)
-            {
+        public void updateVRAM_entries () {
+            for (var i = 0; i < tableVRAM.Items.Count; i++) {
 
                 ListViewItem container = tableVRAM.Items[i];
                 var name = container.Text;
                 var value = container.SubItems[1].Text;
                 var num = (int)int32.ConvertFromString(value);
 
-                if (name == "VendorID")
-                {
+                if (name == "VendorID") {
                     atom_vram_entries[atom_vram_index].ucMemoryVenderID = (Byte)num;
-                }
-                else if (name == "Size (MB)")
-                {
+                } else if (name == "Size (MB)") {
                     atom_vram_entries[atom_vram_index].usMemorySize = (UInt16)num;
-                }
-                else if (name == "Density")
-                {
+                } else if (name == "Density") {
                     atom_vram_entries[atom_vram_index].ucDensity = (Byte)num;
-                }
-                else if (name == "Type")
-                {
+                } else if (name == "Type") {
                     atom_vram_entries[atom_vram_index].ucMemoryType = (Byte)num;
                 }
             }
         }
 
-        private void listVRAM_SelectionChanged(object sender, EventArgs e)
-        {
+        private void listVRAM_SelectionChanged (object sender, EventArgs e) {
             updateVRAM_entries();
             tableVRAM.Items.Clear();
-            if (listVRAM.SelectedIndex >= 0 && listVRAM.SelectedIndex < listVRAM.Items.Count)
-            {
+            if (listVRAM.SelectedIndex >= 0 && listVRAM.SelectedIndex < listVRAM.Items.Count) {
                 atom_vram_index = listVRAM.SelectedIndex;
                 tableVRAM.Items.Add(new ListViewItem(new string[] {
                     "VendorID",
@@ -1369,65 +1200,51 @@ namespace PolarisBiosEditor
             }
         }
 
-        private void listVRAM_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        private void listVRAM_SelectedIndexChanged (object sender, EventArgs e) {
 
         }
 
-        private void apply_timings(int vendor_index, int timing_index)
-        {
-            for (var i = 0; i < tableVRAM_TIMING.Items.Count; i++)
-            {
+        private void apply_timings (int vendor_index, int timing_index) {
+            for (var i = 0; i < tableVRAM_TIMING.Items.Count; i++) {
                 ListViewItem container = tableVRAM_TIMING.Items[i];
                 var name = container.Text;
                 UInt32 real_mhz = 0;
                 int mem_index = -1;
 
-                if (name.IndexOf(':') > 0)
-                {
+                if (name.IndexOf(':') > 0) {
                     // get mem index
                     mem_index = (Int32)int32.ConvertFromString(name.Substring(0, 1));
-                }
-                else
-                {
+                } else {
                     mem_index = 32768;
                 }
 
                 real_mhz = (UInt32)uint32.ConvertFromString(name.Substring(name.IndexOf(':') + 1));
 
-                if (real_mhz >= 1500 && (mem_index == vendor_index || mem_index == 32768))
-                {
+                if (real_mhz >= 1500 && (mem_index == vendor_index || mem_index == 32768)) {
                     // set the timings
                     container.SubItems[1].Text = timings[timing_index];
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void button1_Click (object sender, EventArgs e) {
             int samsung_index = -1;
             int micron_index = -1;
             int elpida_index = -1;
             int hynix_1_index = -1;
             int hynix_2_index = -1;
-            for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++)
-            {
+            for (var i = 0; i < atom_vram_info.ucNumOfVRAMModule; i++) {
                 string mem_vendor;
-                if (atom_vram_entries[i].strMemPNString[0] != 0)
-                {
+                if (atom_vram_entries[i].strMemPNString[0] != 0) {
                     var mem_id = Encoding.UTF8.GetString(atom_vram_entries[i].strMemPNString).Substring(0, 10);
 
-                    if (rc.ContainsKey(mem_id))
-                    {
+                    if (rc.ContainsKey(mem_id)) {
                         mem_vendor = rc[mem_id];
-                    }
-                    else
-                    {
+                    } else {
                         mem_vendor = "UNKNOWN";
                     }
 
-                    switch (mem_vendor)
-                    {
+                    switch (mem_vendor) {
                         case "SAMSUNG":
                             samsung_index = i;
                             break;
@@ -1444,52 +1261,36 @@ namespace PolarisBiosEditor
                             hynix_2_index = i;
                             break;
                     }
-
-
                 }
             }
 
-            if (samsung_index != -1)
-            {
+            if (samsung_index != -1) {
                 MessageBox.Show("Samsung Memory found at index #" + samsung_index + ", now applying UBERMIX 3.1 timings to 1500+ strap(s)");
                 apply_timings(samsung_index, 0);
             }
 
-            if (hynix_2_index != -1)
-            {
+            if (hynix_2_index != -1) {
                 MessageBox.Show("Hynix (2) Memory found at index #" + hynix_2_index + ", now applying GOOD HYNIX MINING timings to 1500+ strap(s)");
                 apply_timings(hynix_2_index, 4);
-
             }
 
-            if (micron_index != -1)
-            {
+            if (micron_index != -1) {
                 MessageBox.Show("Micron Memory found at index #" + micron_index + ", now applying GOOD MICRON MINING timings to 1500+ strap(s)");
-
                 apply_timings(micron_index, 5);
-
             }
 
-            if (hynix_1_index != -1)
-            {
+            if (hynix_1_index != -1) {
                 MessageBox.Show("Hynix (1) Memory found at index #" + hynix_1_index + ", now applying GOOD HYNIX MINING timings to 1500+ strap(s)");
-
                 apply_timings(hynix_1_index, 6);
-
             }
 
-            if (elpida_index != -1)
-            {
+            if (elpida_index != -1) {
                 MessageBox.Show("Elpida Memory found at index #" + elpida_index + ", now applying GOOD ELPIDA MINING timings to 1500+ strap(s)");
-
                 apply_timings(elpida_index, 7);
-
             }
-            if (samsung_index == -1 && hynix_2_index == -1 && hynix_1_index == -1 && elpida_index == -1 && micron_index == -1)
-            {
+            if (samsung_index == -1 && hynix_2_index == -1 && hynix_1_index == -1 && elpida_index == -1 && micron_index == -1) {
                 MessageBox.Show("Sorry, no supported memory found. If you think this is an error, please file a bugreport @ github.com/BoGnY/PolarisBiosEditor");
             }
-
         }
     }
 }
