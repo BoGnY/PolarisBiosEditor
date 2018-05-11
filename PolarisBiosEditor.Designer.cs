@@ -1,33 +1,29 @@
-namespace PolarisBiosEditor
-{
-  partial class PolarisBiosEditor
-  {
-    /// <summary>
-    /// Required designer variable.
-    /// </summary>
-    private System.ComponentModel.IContainer components = null;
+namespace PolarisBiosEditor {
+    partial class PolarisBiosEditor {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-    /// <summary>
-    /// Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-    protected override void Dispose(bool disposing)
-    {
-      if (disposing && (components != null))
-      {
-        components.Dispose();
-      }
-      base.Dispose(disposing);
-    }
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose (bool disposing) {
+            if (disposing && (components != null)) {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-    #region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-    /// <summary>
-    /// Required method for Designer support - do not modify
-    /// the contents of this method with the code editor.
-    /// </summary>
-    private void InitializeComponent()
-    {
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent () {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PolarisBiosEditor));
             this.open = new System.Windows.Forms.Button();
             this.save = new System.Windows.Forms.Button();
             this.txtChecksum = new System.Windows.Forms.TextBox();
@@ -107,13 +103,14 @@ namespace PolarisBiosEditor
             // 
             // txtBIOSBootupMessage
             // 
-            this.txtBIOSBootupMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.txtBIOSBootupMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBIOSBootupMessage.Font = new System.Drawing.Font("Courier New", 8.25F);
             this.txtBIOSBootupMessage.Location = new System.Drawing.Point(295, 14);
             this.txtBIOSBootupMessage.Name = "txtBIOSBootupMessage";
             this.txtBIOSBootupMessage.Size = new System.Drawing.Size(500, 20);
+            this.txtBIOSBootupMessage.TabIndex = 5;
             // 
             // boxROM
             // 
@@ -449,7 +446,9 @@ namespace PolarisBiosEditor
             this.Controls.Add(this.editSubItem1);
             this.Controls.Add(this.editSubItem2);
             this.Controls.Add(this.apply);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PolarisBiosEditor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PBE";
             this.Load += new System.EventHandler(this.PolarisBiosEditor_Load);
             this.boxROM.ResumeLayout(false);
@@ -462,49 +461,49 @@ namespace PolarisBiosEditor
             this.ResumeLayout(false);
             this.PerformLayout();
 
-    }
+        }
 
-    #endregion
+        #endregion
 
-    private System.Windows.Forms.Button open;
-    private System.Windows.Forms.Button save;
-    private System.Windows.Forms.TextBox txtChecksum;
-    private System.Windows.Forms.TextBox txtBIOSBootupMessage;
-    private System.Windows.Forms.GroupBox boxROM;
-    private System.Windows.Forms.GroupBox boxPOWERPLAY;
-    private System.Windows.Forms.GroupBox boxPOWERTUNE;
-    private System.Windows.Forms.GroupBox boxFAN;
-    private System.Windows.Forms.GroupBox boxGPU;
-    private System.Windows.Forms.GroupBox boxMEM;
-    private System.Windows.Forms.GroupBox boxVRAM;
-    private System.Windows.Forms.ListView tableROM;
-    private System.Windows.Forms.ListView tablePOWERPLAY;
-    private System.Windows.Forms.ListView tablePOWERTUNE;
-    private System.Windows.Forms.ListView tableFAN;
-    private System.Windows.Forms.ListView tableGPU;
-    private System.Windows.Forms.ListView tableMEMORY;
-    private System.Windows.Forms.ListView tableVRAM;
-    private System.Windows.Forms.ListView tableVRAM_TIMING;
-    private System.Windows.Forms.ComboBox listVRAM;
-    private System.Windows.Forms.ColumnHeader columnHeader1;
-    private System.Windows.Forms.ColumnHeader columnHeader2;
-    private System.Windows.Forms.ColumnHeader columnHeader3;
-    private System.Windows.Forms.ColumnHeader columnHeader4;
-    private System.Windows.Forms.ColumnHeader columnHeader5;
-    private System.Windows.Forms.ColumnHeader columnHeader6;
-    private System.Windows.Forms.ColumnHeader columnHeader9;
-    private System.Windows.Forms.ColumnHeader columnHeader10;
-    private System.Windows.Forms.ColumnHeader columnHeader11;
-    private System.Windows.Forms.ColumnHeader columnHeader12;
-    private System.Windows.Forms.ColumnHeader columnHeader13;
-    private System.Windows.Forms.ColumnHeader columnHeader14;
-    private System.Windows.Forms.ColumnHeader columnHeader15;
-    private System.Windows.Forms.ColumnHeader columnHeader16;
-    private System.Windows.Forms.ColumnHeader columnHeader7;
-    private System.Windows.Forms.ColumnHeader columnHeader8;
-    private System.Windows.Forms.TextBox editSubItem1;
-    private System.Windows.Forms.TextBox editSubItem2;
-    private System.Windows.Forms.Button apply;
+        private System.Windows.Forms.Button open;
+        private System.Windows.Forms.Button save;
+        private System.Windows.Forms.TextBox txtChecksum;
+        private System.Windows.Forms.TextBox txtBIOSBootupMessage;
+        private System.Windows.Forms.GroupBox boxROM;
+        private System.Windows.Forms.GroupBox boxPOWERPLAY;
+        private System.Windows.Forms.GroupBox boxPOWERTUNE;
+        private System.Windows.Forms.GroupBox boxFAN;
+        private System.Windows.Forms.GroupBox boxGPU;
+        private System.Windows.Forms.GroupBox boxMEM;
+        private System.Windows.Forms.GroupBox boxVRAM;
+        private System.Windows.Forms.ListView tableROM;
+        private System.Windows.Forms.ListView tablePOWERPLAY;
+        private System.Windows.Forms.ListView tablePOWERTUNE;
+        private System.Windows.Forms.ListView tableFAN;
+        private System.Windows.Forms.ListView tableGPU;
+        private System.Windows.Forms.ListView tableMEMORY;
+        private System.Windows.Forms.ListView tableVRAM;
+        private System.Windows.Forms.ListView tableVRAM_TIMING;
+        private System.Windows.Forms.ComboBox listVRAM;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ColumnHeader columnHeader14;
+        private System.Windows.Forms.ColumnHeader columnHeader15;
+        private System.Windows.Forms.ColumnHeader columnHeader16;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.TextBox editSubItem1;
+        private System.Windows.Forms.TextBox editSubItem2;
+        private System.Windows.Forms.Button apply;
         private System.Windows.Forms.Button button1;
     }
 }

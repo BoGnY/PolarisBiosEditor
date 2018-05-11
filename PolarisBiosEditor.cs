@@ -375,7 +375,9 @@ namespace PolarisBiosEditor {
         }
 
         [STAThread]
-        static void Main (string[] args) {
+        static void Main () {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             PolarisBiosEditor pbe = new PolarisBiosEditor();
             Application.Run(pbe);
         }
@@ -438,6 +440,9 @@ namespace PolarisBiosEditor {
 
         public PolarisBiosEditor () {
             InitializeComponent();
+        }
+
+        private void PolarisBiosEditor_Load (object sender, EventArgs e) {
             Text = programTitle + " " + version;
 
             try {
@@ -499,10 +504,6 @@ namespace PolarisBiosEditor {
             tableROM.MouseClick += new MouseEventHandler(listView_ChangeSelection);
 
             //MessageBox.Show("Modifying your BIOS is dangerous and could cause irreversible damage to your GPU.\nUsing a modified BIOS may void your warranty.\nThe author will not be held accountable for your actions.", "DISCLAIMER", MessageBoxButtons.OK, MessageBoxImage.Warning);
-        }
-
-        private void PolarisBiosEditor_Load (object sender, EventArgs e) {
-
         }
 
         private void editSubItem2_Click (object sender, EventArgs e) {
