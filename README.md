@@ -83,6 +83,12 @@ yaourt -Sy mono48
 sh build.sh
 ```
 
+or with docker
+
+```
+docker run -it -v $(pwd):/src -w /src mono:latest ./build.sh
+```
+
 ### Executing
 
 Just change your working directory to the PolarisBiosEditor and execute:
